@@ -1,0 +1,99 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* titulo de los formularios*/
+*{
+font-family:Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+}
+
+.titulo 
+{ background-color: #063;
+  color:#FFF;
+  text-align:center;
+}
+
+.formulario1 td
+{
+	border-bottom: 1px dashed;
+	border-bottom-color:#CCC;
+}
+
+.formulario1{
+margin:20px auto;
+}
+
+.ancho1{
+	width:auto;	
+}
+
+#superior{
+	height:110px;
+	background-color:#FFF;
+	background-image:url(../imagenes/banner.jpg);
+	background-repeat:no-repeat;
+		
+}
+
+#menu{
+	float:left ;
+	width:20%;
+	height:800px;
+
+}
+
+#cuerpo{
+	float:left ;
+	width:80%;
+	height:800px;
+
+}
+#pie{
+	clear:both;
+	height:100px;
+	background-color:#999;
+}
+
+#menu li{
+	list-style-type:none;
+	height:31px;
+	border-bottom-color:#CCC;
+	border-bottom-style:solid;
+	border-bottom-width:thin;
+	line-height:31px
+}
+#menu ul{
+	padding:0px;
+	background-color:#FFF;
+}
+#menu li:hover, a hover{
+	background-color:#FC6;
+	
+
+}
+#menu .titulo:hover{
+	background-color:#063;
+	color:#FFF;
+}
+a{ text-decoration:none;
+color:#000;
+}
+
+.buscado{
+	background-color:#FF0
+	}
+	
+.dinero
+{
+	text-align:right;
+}	
+
+.cargando
+{
+	background-image: url('../imagenes/cargando.gif');
+	background-repeat:no-repeat;
+	margin:0 auto;
+	background-size:contain;
+	height:50px;
+	width:50px;
+	display:none;
+}

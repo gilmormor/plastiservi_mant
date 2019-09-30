@@ -1,0 +1,50 @@
+.jumbotron {
+    padding: 0px 0;
+    margin: 0px;
+    background: #75890c;
+}
+.container{
+    padding: 0px;
+  	max-width: 3000px;
+    
+}
+.container-fluid{
+	 padding: 0px;	
+}
+.form-control {
+    
+   margin: 0px;
+
+}
+
+legend {
+
+margin:10px;
+}
+.form-group {
+margin:5px; 
+
+}
+h4{
+color:white !important;
+   font-size: 10px;
+		padding-top:0;
+		margin: 0px;
+		background:#75890c;
+      
+
+}
+h3{
+color:black !important;
+     background:#bac812; 
+     margin: 10px; 
+
+}
+h2{
+	padding: 0px 0;
+	margin: 0px; 
+	background:#75890c;
+	color:black !important;
+}
+
+

@@ -1,0 +1,10 @@
+[12-Oct-2017 22:54:21 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/softserv/public_html/colegio-juanxxiii/clases/conexion.class.php:45
+Stack trace:
+#0 /home/softserv/public_html/colegio-juanxxiii/clases/conexion.class.php(24): Db->conectar('190.9.42.167', 'softserv_softbd', 'SYSCA3125')
+#1 /home/softserv/public_html/colegio-juanxxiii/clases/conexion.class.php(37): Db->__construct()
+#2 /home/softserv/public_html/colegio-juanxxiii/pantallas/crear_usuario.php(8): Db::getInstance()
+#3 {main}
+  thrown in /home/softserv/public_html/colegio-juanxxiii/clases/conexion.class.php on line 45
+[18-Sep-2018 15:41:53 UTC] PHP Fatal error:  Class 'conexion' not found in /home/softserv/public_html/colegio-juanxxiii/pantallas/editar_usuestudiante.php on line 7
+[29-Sep-2018 13:49:27 UTC] PHP Fatal error:  Class 'conexion' not found in /home/softserv/public_html/colegio-juanxxiii/pantallas/editar_usuestudiante.php on line 7
+[13-Feb-2019 16:19:57 UTC] PHP Fatal error:  Class 'conexion' not found in /home/softserv/public_html/colegio-juanxxiii/pantallas/editar_usuestudiante.php on line 7

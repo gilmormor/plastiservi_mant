@@ -1,0 +1,234 @@
+label~.form-control-feedback {
+    top: 23px !important;
+    right: 10px;
+}
+
+
+select~.form-control-feedback {
+    top: 23px !important;
+    right: 23px !important;
+}
+.titulo
+{
+	height:35px;
+	line-height: 35px;
+}
+
+.separador-md
+{
+	height: 40px;
+}
+
+header
+{
+	background-color: #2196f3;
+	height: 30px;
+	text-align: center;
+	line-height: 30px; /*para centrar elemento verticalmente*/
+}
+.text-header
+{
+	color: #FFF;
+	font-size: 14px;
+}
+
+footer
+{
+	background-color: #CCC;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+}
+
+.form-group
+{
+	margin-bottom: 2px;
+}
+.form-control
+{
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.text-footer
+{
+	color: #000;
+}
+
+.zona_cargando
+{
+	background-image: url('../imagenes/cargando.gif');
+	background-repeat:no-repeat;
+	margin:0 auto;
+	background-size:contain;
+	height:50px;
+	width:50px;
+	display:none;
+}
+
+.my-error-class {
+    color:red;
+}
+.my-valid-class {
+    color:black;
+}
+
+.paddin0 {
+padding: 0px; 
+}
+
+.mayuscula
+{
+	text-transform:uppercase;
+}
+
+
+.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('../imagenes/cargando.gif') 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+}
+
+.glyphicon{
+	top: 4px;
+}
+
+#menu ul { list-style-type: none;}
+#menu ul li.dropdown { float: left;
+}
+#menu ul li a {display: block;
+text-decoration: none;
+position: relative;
+}
+#menu ul li:hover {position: relative;
+}
+#menu ul li a:hover, #menu ul li:hover a.dropdown {background-color: #d8d8d8;
+position: relative;
+}
+#menu ul li a.dropdown {display: block!important;display: none;
+position: relative;
+}
+#menu ul li ul {display: none;
+}
+#menu ul li a:hover ul, #menu ul li:hover ul {
+display: block;
+}
+#menu ul li ul li a:hover {
+position: relative;
+}
+table.falsa {border-collapse:collapse;
+border:0px;
+float: left;
+position: relative;
+}
+
+.checkbox label:after, 
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+
+/*
+#menu {  text-align: center;
+font-size: 0.7em;
+width: 820px;
+margin: 20px auto;
+}
+#menu ul { list-style-type: none;}
+#menu ul li.nivel1 { float: left;
+width: 162px;
+margin-right: 2px;
+}
+#menu ul li a {display: block;
+text-decoration: none;
+color: #fff;
+background-color: #399;
+border: solid 1px #fff;
+padding: 8px;
+position: relative;
+}
+#menu ul li:hover {position: relative;
+}
+#menu ul li a:hover, #menu ul li:hover a.nivel1 {background-color: #6CC;
+color: #000;
+position: relative;
+}
+#menu ul li a.nivel1 {display: block!important;display: none;
+position: relative;
+}
+#menu ul li ul {display: none;
+}
+#menu ul li a:hover ul, #menu ul li:hover ul {display: block;
+position: absolute;left: 0px;
+}
+#menu ul li ul li a {width: 160px;
+padding: 6px 0px 8px 0px;
+border-top-color: #000;
+}
+#menu ul li ul li a:hover {border-top-color: #000;
+position: relative;
+}
+table.falsa {border-collapse:collapse;
+border:0px;
+float: left;
+position: relative;
+}
+*/
