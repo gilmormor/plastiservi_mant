@@ -780,11 +780,27 @@ class ordentrabmant
 			$fechah = date_format($fecha, 'Y-m-d')." 23:59:59";
 			$aux_condFecha = "solicitudtrabmant.fechaHoraini>='$fechad' and solicitudtrabmant.fechaHoraini<='$fechah'";
 		}
+		/*
 		if(empty($departamentoAreaID)){
 			$aux_condDpto = " true";
 		}else{
 			$aux_condDpto = "solicitudtrabmant.departamentoAreaID = '$departamentoAreaID'";
+		}*/
+		if(empty($departamentoAreaID)){
+			$aux_condDpto = "true";
 		}
+		else{
+			//*** AQUI CONVIERTO EL VECTOR EN UNA CADENA PARA LUEGO BUSCAR DENTRO DE ELLA EN EL SQL
+			foreach ($departamentoAreaID as $fila) {
+			    $cod_empVec .= "'".$fila['departamentoAreaID']."',";
+			}
+			$cod_empVec = substr($cod_empVec, 1, -2);
+			//echo $cod_empVec;
+			$aux_condDpto = "solicitudtrabmant.departamentoAreaID in ('$cod_empVec')";
+			//***
+			//echo $cod_empVec;
+		}
+
 		$aux_condTrab = "";
 		$aux_fechaFinComp = "fechafin";
 		switch($staTrabajo){//RREQUEST lee valores _POST y _GET
@@ -806,59 +822,61 @@ class ordentrabmant
 				$aux_condTrab = " solicitudtrabmant.solicitudTrabID in (select solicitudTrabID from ordentrabmant where statusaceprech=1)";
 				$aux_fechaFinComp = "fechafin";
 				break;
+			case 6:	
+				$aux_condTrab = " solicitudtrabmant.solicitudTrabID in (select solicitudTrabID from ordentrabmant where statusaceprech=2)";
+				$aux_fechaFinComp = "now()";
+				break;
 			default:
 		}
 
-
-		if(true){ //($departamentoAreaID!=""){
-			$respuesta['tabla'] .= '<table id="tablaOrdTrab" name="tablaOrdTrab" class="table display AllDataTables responsive table-hover table-condensed">
-				<thead>
-					<tr>
-						<th>ST</th>
-						<th>OT</th>
-						<th>Fecha Ini S</th>
-						<th>Fecha Ini Trab</th>
-						<th>Fecha Fin Trab</th>
-						<th>Horas</th>
-						<th>Prioridad</th>
-						<th>Número</th>
-						<th>Observaciones</th>
-						<th>Solicitante</th>
-						<th align="left">Mecánicos</th>
-						<th style="display:none;">ema_usu</th>
-						<th style="display:none;">usuarioID</th>
-						<th style="display:none;">maquinariaequiposDetalleID</th>
-						<th style="display:none;">departamentoAreaID</th>
-						<th style="display:none;">nombreDpto</th>
-						<th style="display:none;">Prueba</th>
-					</tr>
-				</thead>
-				<tbody>';
-			$usuarioID=$_SESSION["usuarioID"];
-			$sql = "select solicitudtrabmant.solicitudTrabID,ordentrabmant.ordentrabmantID,
-			solicitudtrabmant.departamentoAreaID,
-			maquinariaequiposdetalle.codigoInterno,solicitudtrabmant.descripcion,fechaHoraini,
-			solicitudtrabmant.usuarioID,usuario.ema_usu,usuario.nom_usu,usuario.ape_usu,
-			solicitudtrabmant.maquinariaequiposDetalleID,
-			solicitudtrabmant.prioridad,departamento.nombre,ordentrabmant.fechaini,
-			ordentrabmant.fechafin,ordentrabmant.statusaceprech,ordentrabmant.obseraceprech, 
-			CONCAT(TIMESTAMPDIFF(DAY, ordentrabmant.fechaini, $aux_fechaFinComp), 'd, ', 
-			MOD(TIMESTAMPDIFF(HOUR, ordentrabmant.fechaini, $aux_fechaFinComp), 24), 'h y ', 
-			MOD(TIMESTAMPDIFF(MINUTE, ordentrabmant.fechaini, $aux_fechaFinComp), 60), 'm') as  timetrascurrido
-			from solicitudtrabmant INNER JOIN maquinariaequiposdetalle 
-			ON solicitudtrabmant.maquinariaequiposDetalleID=maquinariaequiposdetalle.maquinariaequiposDetalleID 
-			INNER JOIN usuario 
-			ON solicitudtrabmant.usuarioID=usuario.usuarioID 
-			inner JOIN departamentoarea
-			ON solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
-			INNER JOIN departamento
-			ON departamentoarea.departamentoID=departamento.departamentoID
-			left join ordentrabmant
-			on solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID and ordentrabmant.usuarioIDdelete=0
-			where solicitudtrabmant.usuarioIDdelete=0
-			and $aux_condFecha
-			and $aux_condDpto and $aux_condTrab
-			ORDER BY ordentrabmant.fechaini;";
+		$respuesta['tabla'] .= '<table id="tablaOrdTrab" name="tablaOrdTrab" class="table display AllDataTables responsive table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>ST</th>
+					<th>OT</th>
+					<th>Fecha Ini S</th>
+					<th>Fecha Ini Trab</th>
+					<th>Fecha Fin Trab</th>
+					<th>Horas</th>
+					<th>Prioridad</th>
+					<th>Número</th>
+					<th>Observaciones</th>
+					<th>Solicitante</th>
+					<th align="left">Mecánicos</th>
+					<th style="display:none;">ema_usu</th>
+					<th style="display:none;">usuarioID</th>
+					<th style="display:none;">maquinariaequiposDetalleID</th>
+					<th style="display:none;">departamentoAreaID</th>
+					<th style="display:none;">nombreDpto</th>
+					<th style="display:none;">Prueba</th>
+				</tr>
+			</thead>
+			<tbody>';
+		$usuarioID=$_SESSION["usuarioID"];
+		$sql = "select solicitudtrabmant.solicitudTrabID,ordentrabmant.ordentrabmantID,
+		solicitudtrabmant.departamentoAreaID,
+		maquinariaequiposdetalle.codigoInterno,solicitudtrabmant.descripcion,fechaHoraini,
+		solicitudtrabmant.usuarioID,usuario.ema_usu,usuario.nom_usu,usuario.ape_usu,
+		solicitudtrabmant.maquinariaequiposDetalleID,
+		solicitudtrabmant.prioridad,departamento.nombre,ordentrabmant.fechaini,
+		ordentrabmant.fechafin,ordentrabmant.statusaceprech,ordentrabmant.obseraceprech, 
+		CONCAT(TIMESTAMPDIFF(DAY, ordentrabmant.fechaini, $aux_fechaFinComp), 'd, ', 
+		MOD(TIMESTAMPDIFF(HOUR, ordentrabmant.fechaini, $aux_fechaFinComp), 24), 'h y ', 
+		MOD(TIMESTAMPDIFF(MINUTE, ordentrabmant.fechaini, $aux_fechaFinComp), 60), 'm') as  timetrascurrido
+		from solicitudtrabmant INNER JOIN maquinariaequiposdetalle 
+		ON solicitudtrabmant.maquinariaequiposDetalleID=maquinariaequiposdetalle.maquinariaequiposDetalleID 
+		INNER JOIN usuario 
+		ON solicitudtrabmant.usuarioID=usuario.usuarioID 
+		inner JOIN departamentoarea
+		ON solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
+		INNER JOIN departamento
+		ON departamentoarea.departamentoID=departamento.departamentoID
+		left join ordentrabmant
+		on solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID and ordentrabmant.usuarioIDdelete=0
+		where solicitudtrabmant.usuarioIDdelete=0
+		and $aux_condFecha
+		and $aux_condDpto and $aux_condTrab
+		ORDER BY ordentrabmant.fechaini;";
 /*
 			inner join vistadptoxusuario
 			on solicitudtrabmant.departamentoAreaID=vistadptoxusuario.departamentoAreaID and vistadptoxusuario.usuarioID='$usuarioID'
@@ -874,114 +892,113 @@ class ordentrabmant
 			//solicitudtrabmant.departamentoAreaID='$departamentoAreaID' and 
 			//echo $sql;
 			
-			$ok=$conexion->ejecutarQuery($sql);
-			$filas=mysql_num_rows($ok);
-			if($filas>0)
+		$ok=$conexion->ejecutarQuery($sql);
+		$filas=mysql_num_rows($ok);
+		if($filas>0)
+		{
+			$respuesta['numreg'] = $filas;
+			$respuesta['exito'] = true;
+			$respuesta['mensaje'] = 'Código encontrado.';
+			$i = 0;
+			$personas = array();
+			while(($datos=mysql_fetch_assoc($ok))>0)
 			{
-				$respuesta['numreg'] = $filas;
-				$respuesta['exito'] = true;
-				$respuesta['mensaje'] = 'Código encontrado.';
-				$i = 0;
-				$personas = array();
-				while(($datos=mysql_fetch_assoc($ok))>0)
-				{
-					$i += 1;
-					$departamentoAreaID = $datos["departamentoAreaID"];
-					$nombreDpto         = $datos["nombre"];
-					$ordentrabmantID    = $datos["ordentrabmantID"];
-					$solicitudTrabID    = $datos["solicitudTrabID"];
-					$maquinaID		    = $datos["maquinaID"];
-					$codigoInterno      = $datos["codigoInterno"];
-					$descripcion        = $datos["descripcion"];
-					$fechainitra        = $datos["fechaini"];
-					$fechafintra        = $datos["fechafin"];
-					$timetrascurrido    = $datos["timetrascurrido"];
-					$ema_usu            = $datos["ema_usu"];
-					$usuarioID          = $datos["usuarioID"];
-					$nomapeusu          = $datos["nom_usu"].' '.$datos["ape_usu"];
-					$prioridad          = $datos["prioridad"];
-					$statusaceprech     = $datos["statusaceprech"];
-					$obseraceprech      = $datos["obseraceprech"];
-					$fechaHoraini       = $datos["fechaHoraini"];
-					$auxPrioridad       = $prioridad;
-					switch($prioridad){//RREQUEST lee valores _POST y _GET
-						case '1':	
-							$auxPrioridad = 'Emergencia';
-							break;
-						case '2':	
-							$auxPrioridad = 'Urgente';
-							break;
-						case '3':	
-							$auxPrioridad = 'Normal';
-							break;
-						default:
-					}
-					$colorFila = "";
-					if($statusaceprech=='2'){
-						$colorFila = " style='background-color: rgb(255, 105, 97);'  title='Rechazo por: $obseraceprech' data-toggle='tooltip'";
-					}
-					$sql1 = "select vistausuariopersona.personaID,vistausuariopersona.nombre 
-							from solicitudtrabmantpersona inner join vistausuariopersona
-							on solicitudtrabmantpersona.personaID=vistausuariopersona.personaID
-							where solicitudTrabID='$solicitudTrabID';";
-					//echo $sql;
-					
-					$mecanicos = "";
-					$ok1=$conexion->ejecutarQuery($sql1);
-					if($ok1)
-					{
-						$filas1=mysql_num_rows($ok1);
-						//echo $filas1;
-						if($filas1>0)
-						{
-							$i1 = 0;
-							$personas = array();
-							while(($datos1=mysql_fetch_assoc($ok1))>0)
-							{
-								$personas[$datos1["nombre"]] = $datos1["nombre"];
-								$i1 += 1;
-							}
-							$respuesta['ordenTrab'][$solicitudTrabID] = $personas;
-							$mecanicos = implode(",", $personas);
-						}
-					}
-
-					$prioridad = $auxPrioridad;
-					$maquinariaequiposDetalleID = $datos["maquinariaequiposDetalleID"];
-					$estado         = "0"; //date("d-m-Y", strtotime($dep_fecha));
-					$respuesta['tabla'] .= "<tr id='fila$i' name='fila$i' $colorFila>
-						<td id='solicitudTrabID$i' name='solicitudTrabID$i'>$solicitudTrabID</td>
-						<td id='ordentrabmantID$i' name='ordentrabmantID$i'>$ordentrabmantID</td>
-						<td id='fechaHoraini$i' name='fechaHoraini$i'>$fechaHoraini</td>
-						<td id='fechainitra$i' name='fechainitra$i'>$fechainitra</td>
-						<td id='fechafintra$i' name='fechafintra$i'>$fechafintra</td>
-						<td id='timetrascurrido$i' name='timetrascurrido$i'>$timetrascurrido</td>
-						<td id='prioridad$i' name='prioridad$i'>$prioridad</td>
-						<td id='maquinaID$i' name='maquinaID$i'>$codigoInterno</td>
-						<td id='descripcion$i' name='descripcion$i'>$descripcion</td>
-						<td id='nomapeusu$i' name='nomapeusu$i'>$nomapeusu</td>
-						<td id='mecanicos$i' name='mecanicos$i'>$mecanicos</td>
-						<td id='ema_usu$i' name='ema_usu$i'  style='display:none;'>$ema_usu</td>
-						<td id='usuarioID$i' name='usuarioID$i'  style='display:none;'>$usuarioID</td>
-						<td id='maquinariaequiposDetalleID$i' name='maquinariaequiposDetalleID$i'  style='display:none;'>$maquinariaequiposDetalleID</td>
-						<td id='departamentoAreaID$i' name='departamentoAreaID$i' style='display:none;'>$departamentoAreaID</td>
-						<td id='nombreDpto$i' name='nombreDpto$i' style='display:none;'>$nombreDpto</td>
-						<td id='prueba$i' name='Prueba$i' style='display:none;'>Gilmer</td>
-					</tr>";
-
-					
-
+				$i += 1;
+				$departamentoAreaID = $datos["departamentoAreaID"];
+				$nombreDpto         = $datos["nombre"];
+				$ordentrabmantID    = $datos["ordentrabmantID"];
+				$solicitudTrabID    = $datos["solicitudTrabID"];
+				$maquinaID		    = $datos["maquinaID"];
+				$codigoInterno      = $datos["codigoInterno"];
+				$descripcion        = $datos["descripcion"];
+				$fechainitra        = $datos["fechaini"];
+				$fechafintra        = $datos["fechafin"];
+				$timetrascurrido    = $datos["timetrascurrido"];
+				$ema_usu            = $datos["ema_usu"];
+				$usuarioID          = $datos["usuarioID"];
+				$nomapeusu          = $datos["nom_usu"].' '.$datos["ape_usu"];
+				$prioridad          = $datos["prioridad"];
+				$statusaceprech     = $datos["statusaceprech"];
+				$obseraceprech      = $datos["obseraceprech"];
+				$fechaHoraini       = $datos["fechaHoraini"];
+				$auxPrioridad       = $prioridad;
+				switch($prioridad){//RREQUEST lee valores _POST y _GET
+					case '1':	
+						$auxPrioridad = 'Emergencia';
+						break;
+					case '2':	
+						$auxPrioridad = 'Urgente';
+						break;
+					case '3':	
+						$auxPrioridad = 'Normal';
+						break;
+					default:
 				}
-				$mecanicos = implode(",", $personas);
+				$colorFila = "";
+				if($statusaceprech=='2'){
+					$colorFila = " style='background-color: rgb(255, 105, 97);'  title='Rechazo por: $obseraceprech' data-toggle='tooltip'";
+				}
+				$sql1 = "select vistausuariopersona.personaID,vistausuariopersona.nombre 
+						from solicitudtrabmantpersona inner join vistausuariopersona
+						on solicitudtrabmantpersona.personaID=vistausuariopersona.personaID
+						where solicitudTrabID='$solicitudTrabID';";
+				//echo $sql;
+				
+				$mecanicos = "";
+				$ok1=$conexion->ejecutarQuery($sql1);
+				if($ok1)
+				{
+					$filas1=mysql_num_rows($ok1);
+					//echo $filas1;
+					if($filas1>0)
+					{
+						$i1 = 0;
+						$personas = array();
+						while(($datos1=mysql_fetch_assoc($ok1))>0)
+						{
+							$personas[$datos1["nombre"]] = $datos1["nombre"];
+							$i1 += 1;
+						}
+						$respuesta['ordenTrab'][$solicitudTrabID] = $personas;
+						$mecanicos = implode(",", $personas);
+					}
+				}
 
-				$respuesta['tabla'] .= "</tbody>
-				</table>";
-				$respuesta['nroreg'] = $i;
-				$respuesta['botonGuardar'] = "<button type='button' class='btn btn-primary col-xs-2 col-md-2 col-xs-offset-5 col-md-offset-5' id='btnguardar' name='btnguardar' title='Guardar' onclick='guardarMant()'>Guardar</button>";
-			}else
-			{
-				$respuesta['mensaje'] = "Fallo la consulta";
+				$prioridad = $auxPrioridad;
+				$maquinariaequiposDetalleID = $datos["maquinariaequiposDetalleID"];
+				$estado         = "0"; //date("d-m-Y", strtotime($dep_fecha));
+				$respuesta['tabla'] .= "<tr id='fila$i' name='fila$i' $colorFila>
+					<td id='solicitudTrabID$i' name='solicitudTrabID$i'>$solicitudTrabID</td>
+					<td id='ordentrabmantID$i' name='ordentrabmantID$i'>$ordentrabmantID</td>
+					<td id='fechaHoraini$i' name='fechaHoraini$i'>$fechaHoraini</td>
+					<td id='fechainitra$i' name='fechainitra$i'>$fechainitra</td>
+					<td id='fechafintra$i' name='fechafintra$i'>$fechafintra</td>
+					<td id='timetrascurrido$i' name='timetrascurrido$i'>$timetrascurrido</td>
+					<td id='prioridad$i' name='prioridad$i'>$prioridad</td>
+					<td id='maquinaID$i' name='maquinaID$i'>$codigoInterno</td>
+					<td id='descripcion$i' name='descripcion$i'>$descripcion</td>
+					<td id='nomapeusu$i' name='nomapeusu$i'>$nomapeusu</td>
+					<td id='mecanicos$i' name='mecanicos$i'>$mecanicos</td>
+					<td id='ema_usu$i' name='ema_usu$i'  style='display:none;'>$ema_usu</td>
+					<td id='usuarioID$i' name='usuarioID$i'  style='display:none;'>$usuarioID</td>
+					<td id='maquinariaequiposDetalleID$i' name='maquinariaequiposDetalleID$i'  style='display:none;'>$maquinariaequiposDetalleID</td>
+					<td id='departamentoAreaID$i' name='departamentoAreaID$i' style='display:none;'>$departamentoAreaID</td>
+					<td id='nombreDpto$i' name='nombreDpto$i' style='display:none;'>$nombreDpto</td>
+					<td id='prueba$i' name='Prueba$i' style='display:none;'>Gilmer</td>
+				</tr>";
+
+				
+
 			}
+			$mecanicos = implode(",", $personas);
+
+			$respuesta['tabla'] .= "</tbody>
+			</table>";
+			$respuesta['nroreg'] = $i;
+			$respuesta['botonGuardar'] = "<button type='button' class='btn btn-primary col-xs-2 col-md-2 col-xs-offset-5 col-md-offset-5' id='btnguardar' name='btnguardar' title='Guardar' onclick='guardarMant()'>Guardar</button>";
+		}else
+		{
+			$respuesta['mensaje'] = "Fallo la consulta";
 		}
 		echo json_encode($respuesta);
 	}
@@ -989,6 +1006,7 @@ class ordentrabmant
 
 	function graficoOT($conexion,$fechad,$fechah,$departamentoAreaID)
 	{
+
 		$respuesta = array();
 		if(empty($fechad) or empty($fechah)){
 			$aux_condFecha = " true";
@@ -999,12 +1017,24 @@ class ordentrabmant
 			$fechah = date_format($fecha, 'Y-m-d')." 23:59:59";
 			$aux_condFecha = "solicitudtrabmant.fechaHoraini>='$fechad' and solicitudtrabmant.fechaHoraini<='$fechah'";
 		}
+		/*
 		if(empty($departamentoAreaID)){
 			$aux_condDpto = " true";
 		}else{
 			$aux_condDpto = "solicitudtrabmant.departamentoAreaID = '$departamentoAreaID'";
 		}
+		*/
+		if(empty($departamentoAreaID)){
+			$aux_condDpto = "true";
+		}else{
+			/* AQUI CONVIERTO EL VECTOR EN UNA CADENA PARA LUEGO BUSCAR DENTRO DE ELLA EN EL SQL*/
+			foreach ($departamentoAreaID as $fila) {
+			    $cod_empVec .= "'".$fila['departamentoAreaID']."',";
+			}
+			$cod_empVec = substr($cod_empVec, 1, -2);
 
+			$aux_condDpto = "solicitudtrabmant.departamentoAreaID in ('$cod_empVec')";			
+		}
 
 		$sql = "select DAYOFMONTH(fechaHoraini) as dia,DATE_FORMAT(date(fechaHoraini), '%d/%m/%Y') AS fechaHoraini,COUNT(*) AS contSOT,
 		SUM(case when fechainiTrab='0000-00-00 00:00:00' then 1 ELSE 0 end) AS SOTSinIniciar,
@@ -1100,12 +1130,24 @@ class ordentrabmant
 			$fechah = date_format($fecha, 'Y-m-d')." 23:59:59";
 			$aux_condFecha = "solicitudtrabmant.fechaHoraini>='$fechad' and solicitudtrabmant.fechaHoraini<='$fechah'";
 		}
+		/*
 		if(empty($departamentoAreaID)){
 			$aux_condDpto = " true";
 		}else{
 			$aux_condDpto = "solicitudtrabmant.departamentoAreaID = '$departamentoAreaID'";
 		}
+		*/
+		if(empty($departamentoAreaID)){
+			$aux_condDpto = "true";
+		}else{
+			/* AQUI CONVIERTO EL VECTOR EN UNA CADENA PARA LUEGO BUSCAR DENTRO DE ELLA EN EL SQL*/
+			foreach ($departamentoAreaID as $fila) {
+			    $cod_empVec .= "'".$fila['departamentoAreaID']."',";
+			}
+			$cod_empVec = substr($cod_empVec, 1, -2);
 
+			$aux_condDpto = "solicitudtrabmant.departamentoAreaID in ('$cod_empVec')";			
+		}
 
 		$sql = "select DAYOFMONTH(fechaHoraini) as dia,DATE_FORMAT(date(fechaHoraini), '%d/%m/%Y') AS fechaHoraini,COUNT(*) AS contSOT,
 		SUM(case when (evaluacion=0 AND fechafinTrab!='0000-00-00 00:00:00') then 1 ELSE 0 end) AS sinvalidar,
@@ -1122,6 +1164,7 @@ class ordentrabmant
 		GROUP BY DATE_FORMAT(date(fechaHoraini), '%d/%m/%Y')
 		ORDER BY solicitudtrabmant.fechaHoraini;";
 		//echo $sql;
+		//return 0;
 		
 		$ok=$conexion->ejecutarQuery($sql);
 		$filas=mysql_num_rows($ok);

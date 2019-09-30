@@ -116,19 +116,20 @@ class utilidades
 		echo "</select>";
 	}
 
-	function hacer_lista_desplegableMultiple($conexion,$tabla,$value,$mostrar,$nombre,$sql,$funcion)
+	function hacer_lista_desplegableMultiple($conexion,$tabla,$value,$mostrar,$nombre,$sql,$funcion,$subtext)
 	{
 		if(empty($sql))
 		{
 			$sql = "select * from $tabla";
 		}
+		//echo $datos[$subtext];
 		$ok = $conexion->ejecutarQuery($sql);
 		//$ok = mysql_query($sql,$conexion);
 
-		echo "<select class='selectpicker form-control' id='$nombre' name='$nombre' onChange='$funcion' multiple title='Seleccione...' data-toggle='tooltip' data-placement='top'>";
+		echo "<select class='selectpicker form-control form-control-lg' id='$nombre' name='$nombre' onChange='$funcion' multiple title='Seleccione...' data-toggle='tooltip' data-placement='top' data-live-search='true' data-size='8'>";
 		while(($datos=mysql_fetch_assoc($ok))>0)
 		{
-		  echo "<option value='$datos[$value]'> $datos[$mostrar] </option>";	
+		  	echo "<option value='$datos[$value]' data-subtext='$datos[$subtext]'> $datos[$mostrar] </option>";	
 	    }
 		echo "</select>";
 	}

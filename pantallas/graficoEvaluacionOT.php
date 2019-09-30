@@ -83,7 +83,7 @@ if ($retorno==1)
 					</div>
 					<div class="col-xs-12 col-md-9 col-sm-9">
 						<?php $usuarioID = $_SESSION["usuarioID"];
-						$objUtilidades->hacer_lista_desplegableB41($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select * from vistadepartamentos where statusMant;",$funcion=""); ?>
+						$objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select *,CONCAT(nombreDpto,' - ',nombreArea) AS areadpto from vistadepartamentos where statusMant;",$funcion="",$subtext="nombreArea"); ?>
 					</div>
 				</div>
 				<div class="col-xs-12 col-md-7 col-sm-7">

@@ -32,13 +32,13 @@ switch($_REQUEST["accion"]){//RREQUEST lee valores _POST y _GET
 		$respuesta=$obj_ordentrabmant->consultarValidarOT($conexion,$_POST['usuarioID']);
 		break;
 	case 'consultaxFiltro':	
-		$respuesta=$obj_ordentrabmant->consultaxFiltro($conexion,$_POST['fechad'],$_POST['fechah'],$_POST['departamentoAreaID'],$_POST['staTrabajo']);
+		$respuesta=$obj_ordentrabmant->consultaxFiltro($conexion,$_POST['fechad'],$_POST['fechah'],json_decode($_POST['departamentoAreaID'],true),$_POST['staTrabajo']);
 		break;
 	case 'graficoOT':	
-		$respuesta=$obj_ordentrabmant->graficoOT($conexion,$_POST['fechad'],$_POST['fechah'],$_POST['departamentoAreaID']);
+		$respuesta=$obj_ordentrabmant->graficoOT($conexion,$_POST['fechad'],$_POST['fechah'],json_decode($_POST['departamentoAreaID'], true));
 		break;
 	case 'graficoEvalOT':	
-		$respuesta=$obj_ordentrabmant->graficoEvalOT($conexion,$_POST['fechad'],$_POST['fechah'],$_POST['departamentoAreaID']);
+		$respuesta=$obj_ordentrabmant->graficoEvalOT($conexion,$_POST['fechad'],$_POST['fechah'],json_decode($_POST['departamentoAreaID'], true));
 		break;
 	case 'consultarValidarOT01':	
 		$respuesta=$obj_ordentrabmant->consultarValidarOT01($conexion,$_POST['usuarioID']);

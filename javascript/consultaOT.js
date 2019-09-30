@@ -113,33 +113,50 @@ function consultar()
 {
 	//alert('entro');
 	//$("#tablaMaquinas").hide();
-	$.ajax({
-			type 	: 'POST',
-			url		: '../controladores/controlador_ordentrabmant.php',
-			data 	: 
-			{
-				accion             : "consultaxFiltro",
-				fechad             : $("#fechad").val(),
-				fechah             : $("#fechah").val(),
-				departamentoAreaID : $("#departamentoAreaID").val(),
-				staTrabajo         : $("#staTrabajo").val()
-			},
-			dataType: 'json',
-			encode	: true
-	})
-	.done(function(datos){
-		//ESPESIFICAR COMO ACTUAR CON LOS DATOS RECIBIDOS
-		if(datos.exito)
-		{
+	var filas = $("#departamentoAreaID").val();
+	//console.log(valTabla);
+	//if((filas == null)){
+	if((false)){
+		alertify.error('Debes seleccionar al menos un area.');
+	}else{
+		var valTabla = [];
+		if((filas != null)){
+			for(j=0; j<filas.length; j++){ //Recorre las filas 1 a 1
+				departamentoAreaID = filas[j];
 
-		}else
-		{
-			alertify.error(datos.mensaje);
+				var fila = {
+					departamentoAreaID
+				};
+				valTabla.push(fila);
+			}			
 		}
-		$("#tablaMaquinas").html(datos.tabla);
-		//$("#tablaMaquinas").fadeIn(2000);
-		configurarTabla();
-		$(".selectpicker").selectpicker('refresh');
-	});
+		$.ajax({
+				type 	: 'POST',
+				url		: '../controladores/controlador_ordentrabmant.php',
+				data 	: 
+				{
+					accion             : "consultaxFiltro",
+					fechad             : $("#fechad").val(),
+					fechah             : $("#fechah").val(),
+					departamentoAreaID : JSON.stringify(valTabla),
+					staTrabajo         : $("#staTrabajo").val()
+				},
+				dataType: 'json',
+				encode	: true
+		})
+		.done(function(datos){
+			//ESPESIFICAR COMO ACTUAR CON LOS DATOS RECIBIDOS
+			if(datos.exito)
+			{
 
+			}else
+			{
+				alertify.error(datos.mensaje);
+			}
+			$("#tablaMaquinas").html(datos.tabla);
+			//$("#tablaMaquinas").fadeIn(2000);
+			configurarTabla();
+			$(".selectpicker").selectpicker('refresh');
+		});
+	}
 }

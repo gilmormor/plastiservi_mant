@@ -85,12 +85,12 @@ if ($retorno==1)
 					</div>
 					<div class="col-xs-12 col-md-9 col-sm-9">
 						<?php $usuarioID = $_SESSION["usuarioID"];
-						$objUtilidades->hacer_lista_desplegableB41($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select * from vistadepartamentos where statusMant;",$funcion=""); ?>
+						$objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select *,CONCAT(nombreDpto,' - ',nombreArea) AS areadpto from vistadepartamentos where statusMant;",$funcion="",$subtext="nombreArea"); ?>
 					</div>
 				</div>
-				<div class="col-xs-12 col-md-7 col-sm-7">
+				<div class="col-xs-12 col-md-2 col-sm-2">
 					<div class="col-xs-12">
-						<div class="col-xs-2 col-md-2 col-sm-2 col-xs-offset-5 col-md-offset-5 col-sm-offset-5">
+						<div class="col-xs-2 col-md-2 col-sm-2 align-items-right">
 							<button type="button" class="btn btn-primary" id="btnConsultar" name="btnConsultar"  data-toggle='tooltip' title="Consultar">Consultar</button>
 						</div>						
 					</div>
