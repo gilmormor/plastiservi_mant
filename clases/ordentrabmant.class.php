@@ -1041,7 +1041,10 @@ class ordentrabmant
 		SUM(case when fechainiTrab!='0000-00-00 00:00:00' and fechafinTrab='0000-00-00 00:00:00' then 1 ELSE 0 end) AS enEjecucion,
 		SUM(case when fechafinTrab!='0000-00-00 00:00:00' and (ordentrabmant.statusaceprech=0 OR isnull(ordentrabmant.statusaceprech)) then 1 ELSE 0 end) AS SOTConFinSinVal,
 		SUM(case when fechafinTrab!='0000-00-00 00:00:00' and ordentrabmant.statusaceprech=1 then 1 ELSE 0 end) AS SOTConFinConVal,
-		SUM(case when fechafinTrab!='0000-00-00 00:00:00' and ordentrabmant.statusaceprech=2 then 1 ELSE 0 end) AS SOTRechazadas
+		SUM(case when fechafinTrab!='0000-00-00 00:00:00' and ordentrabmant.statusaceprech=2 then 1 ELSE 0 end) AS SOTRechazadas,
+		SUM(case when tipomant='C' then 1 ELSE 0 end) AS mantCorrectivo,
+		SUM(case when tipomant='P' then 1 ELSE 0 end) AS mantPreventivo,
+		SUM(case when (tipomant='' or isnull(tipomant)) then 1 ELSE 0 end) AS mantSinAsignar
 		FROM solicitudtrabmant LEFT JOIN ordentrabmant
 		ON solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID
 		where solicitudtrabmant.usuarioIDdelete=0

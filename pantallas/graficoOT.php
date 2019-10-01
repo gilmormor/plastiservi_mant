@@ -120,7 +120,7 @@ if ($retorno==1)
 		<div class="row">
 			<div class="col-xs-12 col-sm-6">
 				<div class="col-xs-12 col-sm-12 text-center">
-					<label id="tituloPie1" name="tituloPie1">Grafico Números</label>
+					<label id="tituloPie1" name="tituloPie1">Gráfico Números</label>
 				</div>
 				<div class="resultadosPie1 text-center" style="width: 100%;">
 					<canvas id="graficoPie1"></canvas>
@@ -128,10 +128,31 @@ if ($retorno==1)
 			</div>
 			<div class="col-xs-12 col-sm-6">
 				<div class="col-xs-12 col-sm-12 text-center">
-					<label id="tituloPie2" name="tituloPie2">Grafico Porcentaje</label>
+					<label id="tituloPie2" name="tituloPie2">Gráfico Porcentaje</label>
 				</div>
 				<div class="resultadosPie2 text-center" style="width: 100%;">
 					<canvas id="graficoPie2"></canvas>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<legend></legend>
+		</div>	
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="col-xs-12 col-sm-12 text-center">
+					<label id="tituloPie3" name="tituloPie2">Gráfico Mant. Preventivo/Correctivo</label>
+				</div>
+				<div class="resultadosPie3 text-center" style="width: 100%;">
+					<canvas id="graficoPie3"></canvas>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="col-xs-12 col-sm-12 text-center">
+					<label id="tituloPie4" name="tituloPie3">Gráfico Mant. Preventivo/Correctivo</label>
+				</div>
+				<div class="resultadosPie4 text-center" style="width: 100%;">
+					<canvas id="graficoPie4"></canvas>
 				</div>
 			</div>
 		</div>

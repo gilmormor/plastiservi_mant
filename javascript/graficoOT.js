@@ -155,6 +155,7 @@ function consultar()
 				$('.resultados').html('<canvas id="graficoBarra"></canvas>');
 				$('.resultadosPie1').html('<canvas id="graficoPie1"></canvas>');
 				$('.resultadosPie2').html('<canvas id="graficoPie2"></canvas>');
+				$('.resultadosPie3').html('<canvas id="graficoPie3"></canvas>');
 				//$("#grafico").html('');
 				fechaHoraini    = [];
 				contSOT         = [];
@@ -163,12 +164,16 @@ function consultar()
 				SOTConFinSinVal = [];
 				SOTConFinConVal = [];
 				SOTRechazadas   = [];
-				contSOTV			= 0;
+				contSOTV		= 0;
 				SOTSinIniciarV	= 0;
-				enEjecucionV		= 0;
-				SOTConFinSinValV	= 0;
-				SOTConFinConValV	= 0;
+				enEjecucionV	= 0;
+				SOTConFinSinValV= 0;
+				SOTConFinConValV= 0;
 				SOTRechazadasV	= 0;
+				mantCorrectivo	= 0;
+				mantPreventivo	= 0;
+				mantSinAsignar	= 0;
+
 				for(i=0;i<datos.length;i++){
 					fechaHoraini[i]     = datos[i]['fechaHoraini'];
 					contSOT[i]          = datos[i]['contSOT'];
@@ -183,6 +188,10 @@ function consultar()
 					SOTConFinSinValV = SOTConFinSinValV + Number(datos[i]['SOTConFinSinVal']);
 					SOTConFinConValV = SOTConFinConValV + Number(datos[i]['SOTConFinConVal']);
 					SOTRechazadasV 	 = SOTRechazadasV + Number(datos[i]['SOTRechazadas']);
+					mantCorrectivo	 = mantCorrectivo + Number(datos[i]['mantCorrectivo']);
+					mantPreventivo	 = mantPreventivo + Number(datos[i]['mantPreventivo']);
+					mantSinAsignar	 = mantSinAsignar + Number(datos[i]['mantSinAsignar']);
+
 				}
 				var color = Chart.helpers.color;
 				var Datos = {
@@ -339,6 +348,70 @@ function consultar()
 					}
 				};
 
+				var config3 = {
+					type: 'pie',
+					data: {
+						datasets: [{
+							data: [
+								mantCorrectivo,
+								mantPreventivo,
+								mantSinAsignar,
+							],
+							backgroundColor: [
+								window.chartColors.purple,
+								window.chartColors.blue,
+								window.chartColors.red
+							],
+							label: 'Dataset 1'
+						}],
+						labels: [
+							'Correctivo',
+							'Preventivo',
+							'Sin Asignar'
+						]
+					},
+					options: {
+						responsive: true
+					}
+				};
+
+				mantCorrectivo = (mantCorrectivo * 100) / contSOTV;
+				mantPreventivo = (mantPreventivo * 100) / contSOTV;
+				mantSinAsignar = (mantSinAsignar * 100) / contSOTV;
+
+				//Redondear a 2 decimales
+				mantCorrectivo = mantCorrectivo.toFixed(2);
+				mantPreventivo = mantPreventivo.toFixed(2);
+				mantSinAsignar = mantSinAsignar.toFixed(2);
+
+				var config4 = {
+					type: 'pie',
+					data: {
+						datasets: [{
+							data: [
+								mantCorrectivo,
+								mantPreventivo,
+								mantSinAsignar,
+							],
+							backgroundColor: [
+								window.chartColors.purple,
+								window.chartColors.blue,
+								window.chartColors.red
+							],
+							label: 'Dataset 1'
+						}],
+						labels: [
+							'Correctivo',
+							'Preventivo',
+							'Sin Asignar'
+						]
+					},
+					options: {
+						responsive: true
+					}
+				};
+
+
 				var ctxPie1 = document.getElementById('graficoPie1').getContext('2d');
 				window.myPie1 = new Chart(ctxPie1, config1);
 				myPie1.clear();
@@ -346,6 +419,16 @@ function consultar()
 				var ctxPie2 = document.getElementById('graficoPie2').getContext('2d');
 				window.myPie2 = new Chart(ctxPie2, config2);
 				myPie2.clear();
+
+				var ctxPie3 = document.getElementById('graficoPie3').getContext('2d');
+				window.myPie3 = new Chart(ctxPie3, config3);
+				myPie3.clear();
+
+				var ctxPie4 = document.getElementById('graficoPie4').getContext('2d');
+				window.myPie4 = new Chart(ctxPie4, config4);
+				myPie3.clear();
+
+
 				$("#tituloPie1").html("Grafico Total Solicitudes ST: "+contSOTV);
 				$("#graficos").show();
 			}else
