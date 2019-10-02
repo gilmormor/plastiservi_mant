@@ -327,7 +327,7 @@ if ($retorno==1)
 						<div class="col-xs-12 col-sm-12">
 							<div class="form-group col-xs-12 col-sm-3">
 								<label for="responsable" class="col-form-label">Responsable(s):</label>
-								<?php $objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistapersonamant",$value="personaID",$mostrar="nombre",$nombre="responsable",$sql="select personaID,nombre,apellido from vistapersonamant;",$funcion="",$subtext="nombreArea"); ?>
+								<?php $objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistapersonamant",$value="personaID",$mostrar="nombre",$nombre="responsable",$sql="select personaID,nombre,apellido from vistapersonamant;",$funcion="",$subtext=""); ?>
 
 								
 								<span class="help-block"></span>
@@ -370,12 +370,12 @@ if ($retorno==1)
 
 							<div class="form-group col-xs-12 col-sm-6" id="lbltipotrab" name="lbltipotrab" tooltip="Get Down." flow="up">
 								<label for="ttmID" class="col-form-label">Indicaciones de Seguridad: (NCH 1466 OF.1978):</label>
-								<?php $objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="tipotrabmant",$value="ttmID",$mostrar="descrip",$nombre="ttmID",$sql="select ttmID,descrip,indseg from tipotrabmant where usuarioIDdelete=0;",$funcion="",$subtext="nombreArea"); ?>
+								<?php $objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="tipotrabmant",$value="ttmID",$mostrar="descrip",$nombre="ttmID",$sql="select ttmID,descrip,indseg from tipotrabmant where usuarioIDdelete=0;",$funcion="",$subtext=""); ?>
 								<span class="help-block"></span>
 							</div>
 
 							<div class="form-group col-xs-12 col-sm-3" style='display:none;'>
-								<?php $objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="tipotrabmant",$value="ttmID",$mostrar="indseg",$nombre="indseg",$sql="select ttmID,descrip,indseg from tipotrabmant where usuarioIDdelete=0;",$funcion="",$subtext="nombreArea"); ?>
+								<?php $objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="tipotrabmant",$value="ttmID",$mostrar="indseg",$nombre="indseg",$sql="select ttmID,descrip,indseg from tipotrabmant where usuarioIDdelete=0;",$funcion="",$subtext=""); ?>
 							</div>
 
 <!--
