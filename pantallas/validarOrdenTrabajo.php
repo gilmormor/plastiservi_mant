@@ -81,7 +81,7 @@ if ($retorno==1)
 					<input type="hidden" name="prioridad" id="prioridad">
 					<input type="hidden" name="iFila" id="iFila">
 		        	<div class="row">
-		        		<div class=">ol-xs-12 col-sm-12">
+		        		<div class="col-xs-12 col-sm-12">
 							<div class="form-group col-xs-12 col-sm-4">
 								<label for="departamentoAreaIDM" class="col-form-label">Departamento:</label>
 								<input type="text" class="form-control" id="departamentoAreaIDM" disabled>

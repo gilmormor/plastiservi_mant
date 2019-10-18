@@ -292,7 +292,7 @@ function update(){
 				alertify.success(datos.mensaje);
 				$("#ModalCenter .close").click();
 				i = $("#iFila").val();
-				$("#fila" + i).fadeOut(2000);
+				$("#fila" + i).fadeOut();
 				//alert('#btnInicioServ'+i);
 			}else
 			{
