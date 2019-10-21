@@ -138,6 +138,7 @@ function consultar()
 					accion             : "consultaxFiltro",
 					fechad             : $("#fechad").val(),
 					fechah             : $("#fechah").val(),
+					personaID          : $("#personaID").val(),
 					departamentoAreaID : JSON.stringify(valTabla),
 					staTrabajo         : $("#staTrabajo").val()
 				},

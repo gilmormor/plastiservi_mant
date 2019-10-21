@@ -763,7 +763,7 @@ class ordentrabmant
 	}
 
 
-	function consultaxFiltro($conexion,$fechad,$fechah,$departamentoAreaID,$staTrabajo)
+	function consultaxFiltro($conexion,$fechad,$fechah,$personaID,$departamentoAreaID,$staTrabajo)
 	{
 		$respuesta = array();
 		$respuesta['exito'] = false;
@@ -799,6 +799,11 @@ class ordentrabmant
 			$aux_condDpto = "solicitudtrabmant.departamentoAreaID in ('$cod_empVec')";
 			//***
 			//echo $cod_empVec;
+		}
+		if(empty($personaID)){
+			$aux_condMecanico = "true";
+		}else{
+			$aux_condMecanico = " solicitudtrabmantpersona.personaID='$personaID'";
 		}
 
 		$aux_condTrab = "";
@@ -873,9 +878,12 @@ class ordentrabmant
 		ON departamentoarea.departamentoID=departamento.departamentoID
 		left join ordentrabmant
 		on solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID and ordentrabmant.usuarioIDdelete=0
+		inner join solicitudtrabmantpersona
+		on solicitudtrabmant.solicitudTrabID=solicitudtrabmantpersona.solicitudTrabID
 		where solicitudtrabmant.usuarioIDdelete=0
 		and $aux_condFecha
-		and $aux_condDpto and $aux_condTrab
+		and $aux_condDpto and $aux_condTrab and $aux_condMecanico
+		group by solicitudtrabmant.solicitudTrabID
 		ORDER BY ordentrabmant.fechaini;";
 /*
 			inner join vistadptoxusuario
@@ -883,7 +891,8 @@ class ordentrabmant
 */
 
 
-			//echo $sql;
+		//echo $sql;
+		//return 0;
 /*ordentrabmant.fechafin='0000-00-00 00:00:00'
 			AND solicitudtrabmant.solicitudTrabID IN 
 			(SELECT solicitudtrabmantpersona.solicitudTrabID FROM solicitudtrabmantpersona)

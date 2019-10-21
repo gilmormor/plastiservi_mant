@@ -54,7 +54,7 @@ if ($retorno==1)
 
 		<div class="container" id="divFiltros" name="divFiltros">
 			<div class="row">
-				<div class="col-xs-12 col-md-5 col-sm-5">
+				<div class="col-xs-12 col-md-4 col-sm-4">
 					<div class="col-xs-12 col-md-3 col-sm-3 text-right" style="padding-left: 0px;padding-right: 0px;">
 						<label for="fecha">Fecha Desde:</label>
 					</div>
@@ -63,7 +63,7 @@ if ($retorno==1)
 					</div>
 				</div>
 
-				<div class="col-xs-12 col-md-5 col-sm-5">
+				<div class="col-xs-12 col-md-4 col-sm-4">
 					<div class="col-xs-12 col-md-3 col-sm-3 text-right" style="padding-left: 0px;padding-right: 0px;">
 						<label for="dep_fecha">Fecha Hasta:</label>
 					</div>
@@ -71,9 +71,19 @@ if ($retorno==1)
 						<input type="text" class="form-control datepicker" name="fechah" id="fechah" placeholder="DD/MM/AAAA" required readonly="">
 					</div>
 				</div>
+				<div class="col-xs-12 col-md-4 col-sm-4">
+					<div class="col-xs-12 col-md-3 col-sm-3 text-right" style="padding-left: 0px;padding-right: 0px;">
+						<label for="personaID">Mecánico:</label>
+					</div>
+					<div class="col-xs-12 col-md-9 col-sm-9">
+						<?php $usuarioID = $_SESSION["usuarioID"];
+						$objUtilidades->hacer_lista_desplegableB41($conexion,$tabla="vistapersonamant",$value="personaID",$mostrar="nombre",$nombre="personaID",$sql="select * from vistapersonamant;",$funcion=""); ?>
+					</div>
+				</div>
+
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-md-5 col-sm-5">
+				<div class="col-xs-12 col-md-4 col-sm-4">
 					<div class="col-xs-12 col-md-3 col-sm-3 text-right" style="padding-left: 0px;padding-right: 0px;">
 						<label for="departamentoAreaID" type="text" data-toggle="tooltip" data-placement="top" title="Seleccione una Opción">Area:</label>
 					</div>
@@ -82,7 +92,7 @@ if ($retorno==1)
 						$objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select *,CONCAT(nombreDpto,' - ',nombreArea) AS areadpto from vistadepartamentos where statusMant;",$funcion="",$subtext="nombreArea"); ?>
 					</div>
 				</div>
-				<div class="col-xs-12 col-md-5 col-sm-5">
+				<div class="col-xs-12 col-md-4 col-sm-4">
 					<div class="col-xs-12 col-md-3 col-sm-3 text-right" style="padding-left: 0px;padding-right: 0px;">
 						<label for="staTrabajo" class="col-form-label">Trabajo:</label>
 					</div>
@@ -102,8 +112,8 @@ if ($retorno==1)
 						<button id="trabAsign" class="btn btn-primary btn-sm" title='Filtrar Trabajos por asignar' data-toggle='tooltip'>Asignar</button>		 		
 					-->
 				</div>
-				<div class="col-xs-12 col-md-2 col-sm-2">
-					<button type="button" class="btn btn-primary" id="btnConsultar" name="btnConsultar"  data-toggle='tooltip' title="Consultar">Consultar</button>
+				<div class="col-xs-12 col-md-4 col-sm-4">
+					<button type="button" class="btn btn-primary text-center" id="btnConsultar" name="btnConsultar"  data-toggle='tooltip' title="Consultar">Consultar</button>
 				</div>			
 			</div>
 			<div class="row">
