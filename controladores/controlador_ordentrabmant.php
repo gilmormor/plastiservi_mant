@@ -42,6 +42,10 @@ switch($_REQUEST["accion"]){//RREQUEST lee valores _POST y _GET
 		break;
 	case 'consultarValidarOT01':	
 		$respuesta=$obj_ordentrabmant->consultarValidarOT01($conexion,$_POST['usuarioID']);
+		break;
+	case 'graficoTAM':	
+		$respuesta=$obj_ordentrabmant->graficoTAM($conexion,$_POST['fechad'],$_POST['fechah'],json_decode($_POST['departamentoAreaID'], true));
+		break;
 	default:
 }
 

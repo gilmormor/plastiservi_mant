@@ -1290,5 +1290,136 @@ class ordentrabmant
 		echo json_encode($respuesta);
 	}
 
+	function graficoTAM($conexion,$fechad,$fechah,$departamentoAreaID)
+	{
+
+		$respuesta = array();
+		if(empty($fechad) or empty($fechah)){
+			$aux_condFecha = " true";
+		}else{
+			$fecha = date_create_from_format('d/m/Y', $fechad);
+			$fechad = date_format($fecha, 'Y-m-d')." 00:00:00";
+			$fecha = date_create_from_format('d/m/Y', $fechah);
+			$fechah = date_format($fecha, 'Y-m-d')." 23:59:59";
+			$aux_condFecha = "solicitudtrabmant.fechaHoraini>='$fechad' and solicitudtrabmant.fechaHoraini<='$fechah'";
+		}
+		/*
+		if(empty($departamentoAreaID)){
+			$aux_condDpto = " true";
+		}else{
+			$aux_condDpto = "solicitudtrabmant.departamentoAreaID = '$departamentoAreaID'";
+		}
+		*/
+		if(empty($departamentoAreaID)){
+			$aux_condDpto = "true";
+		}else{
+			/* AQUI CONVIERTO EL VECTOR EN UNA CADENA PARA LUEGO BUSCAR DENTRO DE ELLA EN EL SQL*/
+			foreach ($departamentoAreaID as $fila) {
+			    $cod_empVec .= "'".$fila['departamentoAreaID']."',";
+			}
+			$cod_empVec = substr($cod_empVec, 1, -2);
+
+			$aux_condDpto = "solicitudtrabmant.departamentoAreaID in ('$cod_empVec')";			
+		}
+
+		$sql = "select departamento.nombre as nombreDpto,
+		solicitudtrabmant.departamentoAreaID
+		FROM solicitudtrabmant INNER JOIN ordentrabmant
+		ON solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID
+		inner join departamentoarea
+		on solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
+		inner join departamento
+		on departamentoarea.departamentoID=departamento.departamentoID
+		WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+		and $aux_condFecha
+		and $aux_condDpto
+		GROUP BY solicitudtrabmant.departamentoAreaID;";
+
+		
+		$ok=$conexion->ejecutarQuery($sql);
+		$filas=mysql_num_rows($ok);
+		if($filas>0)
+		{
+			$i=0;
+			while(($datos=mysql_fetch_assoc($ok))>0)
+			{
+				$respuesta['dpto'][] = $datos;
+				$departamentoAreaID = $datos['departamentoAreaID'];
+				$i++;
+			}
+			//$respuesta['exito'] = true;
+		}else
+		{
+			//$respuesta['mensaje'] = "Fallo la consulta";
+		}
+		$sql = "select solicitudtrabmantpersona.personaID,
+				vistapersonamant.nombre
+				FROM solicitudtrabmantpersona
+				INNER JOIN vistapersonamant
+				ON solicitudtrabmantpersona.personaID=vistapersonamant.personaID
+				INNER JOIN ordentrabmant
+				ON solicitudtrabmantpersona.solicitudTrabID=ordentrabmant.solicitudTrabID
+				INNER JOIN solicitudtrabmant
+				ON solicitudtrabmantpersona.solicitudTrabID=solicitudtrabmant.solicitudTrabID
+				WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+				and $aux_condFecha
+				and $aux_condDpto
+				GROUP BY solicitudtrabmantpersona.personaID;";
+		$ok=$conexion->ejecutarQuery($sql);
+		$filas=mysql_num_rows($ok);
+		if($filas>0)
+		{
+			$i=0;
+			while(($datos=mysql_fetch_assoc($ok))>0)
+			{
+				$id = $datos['personaID'];
+				$respuesta['mecanicos'][$id] = $datos;
+				$i++;
+			}
+		}
+
+
+/*
+		$sql = "select departamento.nombre as nombreDpto,
+		ordentrabmant.solicitudTrabID,vistapersonamant.nombre,
+		(sum(MOD(TIMESTAMPDIFF(HOUR, ordentrabmant.fechaini, ordentrabmant.fechafin), 50000))/COUNT(*)) AS promHoras,
+		COUNT(*) AS contTrabajos
+		FROM solicitudtrabmantpersona
+		INNER JOIN vistapersonamant
+		ON solicitudtrabmantpersona.personaID=vistapersonamant.personaID
+		INNER JOIN ordentrabmant
+		ON solicitudtrabmantpersona.solicitudTrabID=ordentrabmant.solicitudTrabID
+		INNER JOIN solicitudtrabmant
+		ON solicitudtrabmantpersona.solicitudTrabID=solicitudtrabmant.solicitudTrabID
+		inner join departamentoarea
+		on solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
+		inner join departamento
+		on departamentoarea.departamentoID=departamento.departamentoID
+		WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+		and $aux_condFecha
+		and $aux_condDpto
+		GROUP BY solicitudtrabmant.departamentoAreaID,solicitudtrabmantpersona.personaID
+		ORDER BY solicitudtrabmant.departamentoAreaID,solicitudtrabmantpersona.personaID;";
+
+		$ok=$conexion->ejecutarQuery($sql);
+		$filas=mysql_num_rows($ok);
+		if($filas>0)
+		{
+			$j=0;
+			while(($datos=mysql_fetch_assoc($ok))>0)
+			{
+				$respuesta['datos'][] = $datos;
+				$j++;
+			}
+		}
+*/
+		foreach ($respuesta['dpto'] as $dpto){
+			//$cod_empVec .= "'".$dpto['personaID']
+		}
+
+
+		echo json_encode($respuesta);
+	}
+
 }
 ?>
