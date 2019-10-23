@@ -62,6 +62,23 @@ class utilidades
 		echo "</select>";
 	}
 
+	function hacer_lista_desplegableB4SubText($conexion,$tabla,$value,$mostrar,$nombre,$sql,$funcion,$subtext)
+	{
+		if(empty($sql))
+		{
+			$sql = "select * from $tabla";
+		}
+		$ok = $conexion->ejecutarQuery($sql);
+		//$ok = mysql_query($sql,$conexion);
+
+		echo "<select id='$nombre' name='$nombre' onChange='$funcion' class='selectpicker show-tick form-control' data-toggle='tooltip' title='Seleccione...' data-placement='top' data-live-search='true' data-size='8'>";
+		while(($datos=mysql_fetch_assoc($ok))>0)
+		{
+		  echo "<option value='$datos[$value]' data-subtext='$datos[$subtext]'> $datos[$mostrar] </option>";	
+	    }
+		echo "</select>";
+	}
+
 	function hacer_lista_desplegableB41($conexion,$tabla,$value,$mostrar,$nombre,$sql,$funcion)
 	{
 		if(empty($sql))

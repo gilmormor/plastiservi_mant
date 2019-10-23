@@ -28,7 +28,7 @@ if ($retorno==1)
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Tiempo de atención por Mecánico</title>
+	<title>Tiempo de atención por Máquina</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<link rel="stylesheet" href="../bootstrap_iugc/css/bootstrap.min.css">
@@ -52,7 +52,7 @@ if ($retorno==1)
 		<input type="hidden" name="accion" value="modificar">
 		<div class="container">
 			<div class="form-group separador-md" style="margin-bottom: 1px;margin-top: 0px;margin-left: -15px;margin-right: -15px;">
-				<div class="bg-primary text-center titulo text-uppercase">Tiempo de atención por Mecánico - Expresado en Horas</div><button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ocultarMostrarFiltro()">
+				<div class="bg-primary text-center titulo text-uppercase">Tiempo de atención por Máquina - Expresado en Horas</div><button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ocultarMostrarFiltro()">
 	          <span aria-hidden="true" class='glyphicon glyphicon-chevron-up' id="botonD" name="botonD" style="top: -4px;" title="Ocultar Filtros" data-toggle='tooltip'></span>
 	        </button>
 			</div>
@@ -85,7 +85,7 @@ if ($retorno==1)
 					</div>
 					<div class="col-xs-12 col-md-9 col-sm-9">
 						<?php $usuarioID = $_SESSION["usuarioID"];
-						$objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select *,CONCAT(nombreDpto,' - ',nombreArea) AS areadpto from vistadepartamentos where statusMant;",$funcion="",$subtext="nombreArea"); ?>
+						$objUtilidades->hacer_lista_desplegableB4SubText($conexion,$tabla="vistadepartamentos",$value="departamentoAreaID",$mostrar="nombreDpto",$nombre="departamentoAreaID",$sql="select *,CONCAT(nombreDpto,' - ',nombreArea) AS areadpto from vistadepartamentos where statusMant;",$funcion="",$subtext="nombreArea"); ?>
 					</div>
 				</div>
 				<div class="col-xs-12 col-md-4 col-sm-4">
@@ -206,7 +206,7 @@ if ($retorno==1)
 	<script type="text/javascript" src="../bootstrap/js/Chart.js"></script>
 
 	<script src="../javascript/validaciones.js" language="javascript" type="text/javascript"> </script>
-	<script src="../javascript/graficoTAM.js" language="javascript" type="text/javascript"> </script>
+	<script src="../javascript/graficoTAMaq.js" language="javascript" type="text/javascript"> </script>
 	<script src="../javascript/utils.js" language="javascript" type="text/javascript"> </script>
 	<script src="../javascript/principal.js" language="javascript" type="text/javascript"> </script>
 	
