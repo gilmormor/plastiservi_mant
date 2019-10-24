@@ -487,6 +487,7 @@ function consultar()
 
 $('#departamentoAreaID').on('change', function () {
 	//llenarProvincia(this,0);
+	$("#graficos").hide();
 	var colorNames = Object.keys(window.chartColors);
 	var color = Chart.helpers.color;
 	$.ajax({
