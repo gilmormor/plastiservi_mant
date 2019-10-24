@@ -90,11 +90,11 @@ if ($retorno==1)
 				</div>
 				<div class="col-xs-12 col-md-4 col-sm-4">
 					<div class="col-xs-12 col-md-3 col-sm-3 text-right" style="padding-left: 0px;padding-right: 0px;">
-						<label for="personaID">Mecánico:</label>
+						<label for="personaID">Máquinas:</label>
 					</div>
 					<div class="col-xs-12 col-md-9 col-sm-9">
-						<?php $usuarioID = $_SESSION["usuarioID"];
-						$objUtilidades->hacer_lista_desplegableMultiple($conexion,$tabla="vistapersonamant",$value="personaID",$mostrar="nombre",$nombre="personaID",$sql="select * from vistapersonamant;",$funcion="",$subtext=""); ?>
+						<select id='maquinariaequiposDetalleID' name='maquinariaequiposDetalleID' class='selectpicker show-tick form-control' data-live-search='true' data-toggle='tooltip' title='Seleccione...' multiple>"
+						</select>
 					</div>
 				</div>
 				<div class="col-xs-12 col-md-4 col-sm-4">

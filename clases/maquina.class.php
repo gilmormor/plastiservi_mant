@@ -541,5 +541,40 @@ class maquina
 		}
 		echo json_encode($respuesta);
 	}
+
+	function listadoMaqxArea($conexion,$departamentoAreaID){
+		$respuesta = array();
+		$respuesta['exito'] = false;
+		$respuesta['mensaje'] = "";
+		if(!empty($departamentoAreaID)){
+			$sql = "select maquinariaequiposDetalleID,codigoInterno,nombre 
+					from maquinariaequiposdetalle
+					inner join maquinariaequipos
+					on maquinariaequiposdetalle.maquinariaEquiposID=maquinariaequipos.maquinariaEquiposID
+					where departamentoAreaID='$departamentoAreaID'";
+			//echo $sql;
+			$ok=$conexion->ejecutarQuery($sql);
+			$filas=mysql_num_rows($ok);
+			if($filas>0)
+			{
+				$respuesta['exito'] = true;
+				$respuesta['mensaje'] = 'Informacion Encontrada.';
+				$i = 0;
+
+				while(($datos=mysql_fetch_assoc($ok))>0)
+				{
+					$respuesta['maquinas'][$i] = $datos;
+					$i++;
+				}
+			}else{
+				$respuesta['exito'] = true;
+				$respuesta['mensaje'] = 'Informacion Encontrada.';				
+			}
+		}else{
+			$respuesta['exito'] = false;
+			$respuesta['mensaje'] = 'Debe seleccionar un Area.';
+		}
+		echo json_encode($respuesta);		
+	}
 }
 ?>

@@ -46,6 +46,9 @@ switch($_REQUEST["accion"]){//RREQUEST lee valores _POST y _GET
 	case 'graficoTAM':	
 		$respuesta=$obj_ordentrabmant->graficoTAM($conexion,$_POST['fechad'],$_POST['fechah'],json_decode($_POST['personaID'], true),json_decode($_POST['departamentoAreaID'], true));
 		break;
+	case 'graficoTAMaq':	
+		$respuesta=$obj_ordentrabmant->graficoTAMaq($conexion,$_POST['fechad'],$_POST['fechah'],$_POST['departamentoAreaID'],json_decode($_POST['maquinariaequiposDetalleID'], true),json_decode($_POST['valTablacolores'], true));
+		break;
 	default:
 }
 

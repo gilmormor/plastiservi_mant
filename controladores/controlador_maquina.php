@@ -22,6 +22,9 @@ switch($_REQUEST["accion"]){//RREQUEST lee valores _POST y _GET
 	case 'update':	
 		$respuesta=$obj_maquina->update($conexion,$_POST['solicitudTrabID'],$_POST['descripcion'],$_POST['usuarioID']);
 		break;
+	case 'listadoMaqxArea':	
+		$respuesta=$obj_maquina->listadoMaqxArea($conexion,$_POST['departamentoAreaID']);
+		break;
 	default:
 }
 
