@@ -1564,36 +1564,6 @@ class ordentrabmant
 				$respuesta['maquinas'][$i]['backgroundColor'] = $valTablacolores[$i]['colorbackgr'];
 				$respuesta['maquinas'][$i]['borderColor'] = $valTablacolores[$i]['colorborder'];
 
-/*
-				switch($i){//RREQUEST lee valores _POST y _GET
-					case 0:	
-						$respuesta['maquinas'][$i]['backgroundColor'] = 'rgba(255, 99, 132, 0.5)';
-						$respuesta['maquinas'][$i]['borderColor'] = 'rgb(255, 99, 132)';
-						break;
-					case 1:	
-						$respuesta['maquinas'][$i]['backgroundColor'] = 'rgba(153, 102, 255, 0.5)';
-						$respuesta['maquinas'][$i]['borderColor'] = 'rgb(153, 102, 255)';
-						break;
-					case 2:	
-						$respuesta['maquinas'][$i]['backgroundColor'] = 'rgba(255, 205, 86, 0.8)';
-						$respuesta['maquinas'][$i]['borderColor'] = 'rgb(255, 205, 86)';						
-						break;
-					case 3:	
-						$respuesta['maquinas'][$i]['backgroundColor'] = 'rgba(54, 162, 235, 0.5)';
-						$respuesta['maquinas'][$i]['borderColor'] = 'rgb(54, 162, 235)';					
-						break;
-					case 4:	
-						
-						break;
-					case 5:	
-						
-						break;
-					case 6:	
-						
-						break;
-					default:
-				}
-*/
 				$respuesta['maquinas'][$i]['borderWidth'] = 1;
 
 				$sql2 = "select solicitudtrabmant.departamentoAreaID,
@@ -1660,5 +1630,212 @@ class ordentrabmant
 		}
 		echo json_encode($respuesta);
 	}
+
+	function graficoDxTFallas($conexion,$fechad,$fechah,$personaID,$departamentoAreaID,$tipofalla)
+	{
+		$respuesta = array();
+		$horasProm = array();
+		if(empty($fechad) or empty($fechah)){
+			$aux_condFecha = " true";
+		}else{
+			$fecha = date_create_from_format('d/m/Y', $fechad);
+			$fechad = date_format($fecha, 'Y-m-d')." 00:00:00";
+			$fecha = date_create_from_format('d/m/Y', $fechah);
+			$fechah = date_format($fecha, 'Y-m-d')." 23:59:59";
+			$aux_condFecha = "solicitudtrabmant.fechaHoraini>='$fechad' and solicitudtrabmant.fechaHoraini<='$fechah'";
+		}
+		if(empty($departamentoAreaID)){
+			$aux_condDpto = "true";
+		}else{
+			/* AQUI CONVIERTO EL VECTOR EN UNA CADENA PARA LUEGO BUSCAR DENTRO DE ELLA EN EL SQL*/
+			foreach ($departamentoAreaID as $fila) {
+			    $cod_empVec .= "'".$fila['departamentoAreaID']."',";
+			}
+			$cod_empVec = substr($cod_empVec, 1, -2);
+
+			$aux_condDpto = "solicitudtrabmant.departamentoAreaID in ('$cod_empVec')";			
+		}
+		if(empty($personaID)){
+			$aux_condPers = "true";
+		}else{
+			/* AQUI CONVIERTO EL VECTOR EN UNA CADENA PARA LUEGO BUSCAR DENTRO DE ELLA EN EL SQL*/
+			foreach ($personaID as $fila) {
+			    $cod_persVec .= "'".$fila['personaID']."',";
+			}
+			$cod_persVec = substr($cod_persVec, 1, -2);
+
+			$aux_condPers = "solicitudtrabmantpersona.personaID in ('$cod_persVec')";			
+		}
+		$sql = "select solicitudtrabmant.departamentoAreaID,
+		departamento.nombre as nombreDpto
+		FROM solicitudtrabmant INNER JOIN ordentrabmant
+		ON solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID
+		inner join departamentoarea
+		on solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
+		inner join departamento
+		on departamentoarea.departamentoID=departamento.departamentoID
+		inner join solicitudtrabmantpersona
+		ON solicitudtrabmant.solicitudTrabID=solicitudtrabmantpersona.solicitudTrabID
+		WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+		and $aux_condFecha
+		and $aux_condDpto
+		and $aux_condPers
+		GROUP BY solicitudtrabmant.departamentoAreaID;";
+		//echo $sql;
+		$ok=$conexion->ejecutarQuery($sql);
+		$filas=mysql_num_rows($ok);
+		if($filas>0)
+		{
+			$i=0;
+			while(($datos=mysql_fetch_assoc($ok))>0)
+			{
+				$respuesta['dpto'][] = $datos;
+				$departamentoAreaID = $datos['departamentoAreaID'];
+				$i++;
+			}
+			//$respuesta['exito'] = true;
+		}else
+		{
+			//$respuesta['mensaje'] = "Fallo la consulta";
+		}
+
+		foreach ($tipofalla as $fila) {
+			$cod_tipFalla =$fila['tipofalla'];
+			$cod_tipFallaT =$fila['tipofallaT'];
+			$sql1 = "select '$cod_tipFallaT' as label
+					FROM solicitudtrabmant INNER JOIN ordentrabmant
+					ON solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID
+					WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+					and $aux_condFecha
+					and $aux_condDpto
+					and locate('$cod_tipFalla',tipofalla);";
+			echo $sql1;	
+			echo "   ----    ";
+		}
+		return 0;
+		$sql1 = "select vistapersonamant.nombre as label,solicitudtrabmantpersona.personaID
+				FROM solicitudtrabmantpersona
+				INNER JOIN vistapersonamant
+				ON solicitudtrabmantpersona.personaID=vistapersonamant.personaID
+				INNER JOIN ordentrabmant
+				ON solicitudtrabmantpersona.solicitudTrabID=ordentrabmant.solicitudTrabID
+				INNER JOIN solicitudtrabmant
+				ON solicitudtrabmantpersona.solicitudTrabID=solicitudtrabmant.solicitudTrabID
+				WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+				and $aux_condFecha
+				and $aux_condDpto
+				and $aux_condPers
+				GROUP BY solicitudtrabmantpersona.personaID;";
+
+
+		$ok1=$conexion->ejecutarQuery($sql1);
+		$filas1=mysql_num_rows($ok1);
+		if($filas1>0)
+		{
+			$i=0;
+			while(($datos1=mysql_fetch_assoc($ok1))>0)
+			{
+				$id = $datos1['personaID'];
+				$respuesta['mecanicos'][$i] = $datos1;
+
+				switch($i){//RREQUEST lee valores _POST y _GET
+					case 0:	
+						$respuesta['mecanicos'][$i]['backgroundColor'] = 'rgba(255, 99, 132, 0.5)';
+						$respuesta['mecanicos'][$i]['borderColor'] = 'rgb(255, 99, 132)';
+						break;
+					case 1:	
+						$respuesta['mecanicos'][$i]['backgroundColor'] = 'rgba(153, 102, 255, 0.5)';
+						$respuesta['mecanicos'][$i]['borderColor'] = 'rgb(153, 102, 255)';
+						break;
+					case 2:	
+						$respuesta['mecanicos'][$i]['backgroundColor'] = 'rgba(255, 205, 86, 0.8)';
+						$respuesta['mecanicos'][$i]['borderColor'] = 'rgb(255, 205, 86)';						
+						break;
+					case 3:	
+						$respuesta['mecanicos'][$i]['backgroundColor'] = 'rgba(54, 162, 235, 0.5)';
+						$respuesta['mecanicos'][$i]['borderColor'] = 'rgb(54, 162, 235)';					
+						break;
+					case 4:	
+						
+						break;
+					case 5:	
+						
+						break;
+					case 6:	
+						
+						break;
+					default:
+				}
+				$respuesta['mecanicos'][$i]['borderWidth'] = 1;
+
+				$sql2 = "select solicitudtrabmant.departamentoAreaID,
+						(sum(MOD(TIMESTAMPDIFF(HOUR, ordentrabmant.fechaini, ordentrabmant.fechafin), 50000))/COUNT(*)) AS promHoras
+						FROM solicitudtrabmantpersona
+						INNER JOIN vistapersonamant
+						ON solicitudtrabmantpersona.personaID=vistapersonamant.personaID
+						INNER JOIN ordentrabmant
+						ON solicitudtrabmantpersona.solicitudTrabID=ordentrabmant.solicitudTrabID
+						INNER JOIN solicitudtrabmant
+						ON solicitudtrabmantpersona.solicitudTrabID=solicitudtrabmant.solicitudTrabID
+						inner join departamentoarea
+						on solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
+						inner join departamento
+						on departamentoarea.departamentoID=departamento.departamentoID
+						WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+						and $aux_condFecha
+						and $aux_condDpto
+						and solicitudtrabmantpersona.personaID='$id'
+						GROUP BY solicitudtrabmant.departamentoAreaID
+						ORDER BY solicitudtrabmant.departamentoAreaID;";
+						//echo $sql2;
+						//return 0;
+				$ok2=$conexion->ejecutarQuery($sql2);
+				$filas2=mysql_num_rows($ok2);
+				if($filas2>0)
+				{
+					while(($datos2=mysql_fetch_assoc($ok2))>0)
+					{
+						$idDpto = $datos2['departamentoAreaID'];
+						$horasProm[$idDpto] = $datos2;
+					}
+				}
+				//echo json_encode($horasProm);
+				$sql = "select solicitudtrabmant.departamentoAreaID,
+				departamento.nombre as nombreDpto
+				FROM solicitudtrabmant INNER JOIN ordentrabmant
+				ON solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID
+				inner join departamentoarea
+				on solicitudtrabmant.departamentoAreaID=departamentoarea.departamentoAreaID
+				inner join departamento
+				on departamentoarea.departamentoID=departamento.departamentoID
+				inner join solicitudtrabmantpersona
+				ON solicitudtrabmant.solicitudTrabID=solicitudtrabmantpersona.solicitudTrabID
+				WHERE ordentrabmant.usuarioIDdelete=0 and solicitudtrabmant.usuarioIDdelete=0
+				and $aux_condFecha
+				and $aux_condDpto
+				and $aux_condPers
+				GROUP BY solicitudtrabmant.departamentoAreaID;";
+				//echo $sql;
+				
+				$ok=$conexion->ejecutarQuery($sql);
+				$filas=mysql_num_rows($ok);
+				if($filas>0)
+				{
+					$j = 0;
+					while(($datos=mysql_fetch_assoc($ok))>0)
+					{
+						$respuesta['mecanicos'][$i]['data'][$j] = 0;
+						$idDpto = $datos['departamentoAreaID'];
+						$respuesta['mecanicos'][$i]['data'][$j] = $horasProm[$idDpto]['promHoras'];
+						$j++;
+					}
+					//$respuesta['exito'] = true;
+				}
+				$i++;
+			}
+		}
+		echo json_encode($respuesta);
+	}
+
 }
 ?>

@@ -20,30 +20,7 @@ $(document).ready(function() {
 		todayHighlight: true
 	}).datepicker("setDate");
 
-	//$("#departamentoAreaID").selectpicker('selectAll');
-	//$("#departamentoAreaID").selectpicker('selectAll');
-
-	//$('#departamentoAreaID option').prop('selected', true); //Seleccionar todos los items de un select muntiple
-
-
-/* ordenar datatable	
-	$("#asc").click(function()
-	{
-		var table = $("#tablaOrdTrab").DataTable();
-		table.order( [[ 8, 'asc' ]] )
-    .draw();
-	});
-	$("#desc").click(function()
-	{
-		var table = $("#tablaOrdTrab").DataTable();
-		table.order( [[ 8, 'desc' ]] )
-    .draw();
-	});
-*/
-
-
 });
-
 
 function ocultarMostrarFiltro(){
 	if($('#divFiltros').css('display') == 'none'){
@@ -117,50 +94,75 @@ function limpiarInputOT(){
 
 function consultar()
 {
-	var colorNames = Object.keys(window.chartColors);
+	//alert('entro');
+	//$("#tablaMaquinas").hide();
+	
+	//console.log(valTabla);
+	//if((filas == null)){
 
-	aux_valarea = $('#departamentoAreaID').val();	
-	if(aux_valarea=="" || aux_valarea=="0"){
-		alertify.error('Debes seleccionar un area.');
+	if(false){
+		alertify.error('Debes seleccionar al menos un area.');
 	}else{
-		var filas = $("#maquinariaequiposDetalleID").val();
-		var valTablaMaqDetID = [];
+		var filas = $("#departamentoAreaID").val();
+		var valTablaDID = [];
 		if((filas != null)){
 			for(j=0; j<filas.length; j++){ //Recorre las filas 1 a 1
-				maquinariaequiposDetalleID = filas[j];
+				departamentoAreaID = filas[j];
 				var fila = {
-					maquinariaequiposDetalleID
+					departamentoAreaID
 				};
-				valTablaMaqDetID.push(fila);
+				valTablaDID.push(fila);
 			}
 		}
-		var valTablacolores = [];
-		$("#maquinariaequiposDetalleID option").each(function(){
-			maquinariaequiposDetalleID = $(this).attr('colorbackgr');
-			//maquinariaequiposDetalleID = $(this).attr('colorborder');
-			//alert(maquinariaequiposDetalleID + ' - ' + $(this).attr('colorborder'));
+		var filas = $("#personaID").val();
+		var valTablaPID = [];
+		if((filas != null)){
+			for(j=0; j<filas.length; j++){ //Recorre las filas 1 a 1
+				personaID = filas[j];
+				var fila = {
+					personaID
+				};
+				valTablaPID.push(fila);
+			}
+		}
+		/*
+		var filas = $("#tipofalla").val();
+		var valTablaTF = [];
+		if((filas != null)){
+			for(j=0; j<filas.length; j++){ //Recorre las filas 1 a 1
+				tipofalla = filas[j];
+				var fila = {
+					tipofalla
+				};
+				valTablaTF.push(fila);
+			}
+		}
+		*/
+		var valTablaTF = [];
+		$("#tipofalla option").each(function(){
 			var fila = {
-				colorbackgr: $(this).attr('colorbackgr'),
-				colorborder: $(this).attr('colorborder')
+				tipofalla : $(this).attr('value'),
+				label: $(this).attr('label')
 			};
-			valTablacolores.push(fila);
+			valTablaTF.push(fila);
 		});
+
 
 		$("#graficos").hide();
 		$.ajax({
-			type 	: 'POST',
-			url		: '../controladores/controlador_ordentrabmant.php',
-			data 	: 
-			{
-				accion                     : "graficoTAMaq",
-				fechad                     : $("#fechad").val(),
-				fechah                     : $("#fechah").val(),
-				departamentoAreaID         : aux_valarea,
-				maquinariaequiposDetalleID : JSON.stringify(valTablaMaqDetID),
-				valTablacolores			   : JSON.stringify(valTablacolores)
-			},
-			dataType: 'json',
-			encode	: true
+				type 	: 'POST',
+				url		: '../controladores/controlador_ordentrabmant.php',
+				data 	: 
+				{
+					accion             : "graficoDxTFallas",
+					fechad             : $("#fechad").val(),
+					fechah             : $("#fechah").val(),
+					personaID		   : JSON.stringify(valTablaPID),
+					departamentoAreaID : JSON.stringify(valTablaDID),
+					tipofalla		   : JSON.stringify(valTablaTF)
+				},
+				dataType: 'json',
+				encode	: true
 		})
 		.done(function(datos){
 			//ESPESIFICAR COMO ACTUAR CON LOS DATOS RECIBIDOS
@@ -208,12 +210,9 @@ function consultar()
 					mantSinAsignar	 = mantSinAsignar + Number(datos[i]['mantSinAsignar']);
 				}
 */
-/*
 				for(i=0;i<datos['dpto'].length;i++){
 					nombreDpto[i]  = datos['dpto'][i]['nombreDpto'];
 				}
-*/
-				nombreDpto[0]  = datos['dpto'][0]['nombreDpto'];
 
 				var color = Chart.helpers.color;
 				var Datos = {
@@ -260,22 +259,9 @@ function consultar()
 
 				//alert(color(window.chartColors.purple).alpha(0.5).rgbString()+ '  ' + window.chartColors.purple);
 
-				//datos.maquinas.push
-				//alert(datos.maquinas.length);
-				for(j=0; j<datos.maquinas.length; j++){
-					var colorName = colorNames[(j+1) % colorNames.length];
-					var dsColor = window.chartColors[colorName];
-					aux_VecValor = {
-						borderColor: dsColor
-					};
-					//datos.maquinas[j].push(aux_VecValor);
-					//alert(datos.maquinas[j].length);
-					//alert(dsColor);
-				}
-				//return 0;
 				var Datos = {
 						labels : nombreDpto,
-						datasets : datos['maquinas']
+						datasets : datos['mecanicos']
 					}
 
 				//alert(datos['mecanicos']);
@@ -308,7 +294,7 @@ function consultar()
 						},
 						title: {
 							display: true,
-							text: 'Tiempo de atención por Máquina - Expresado en Horas'
+							text: 'Tiempo de atención por Mecánico - Expresado en Horas'
 						}
 					}
 				});
@@ -484,33 +470,3 @@ function consultar()
 		});
 	}
 }
-
-$('#departamentoAreaID').on('change', function () {
-	//llenarProvincia(this,0);
-	$("#graficos").hide();
-	var colorNames = Object.keys(window.chartColors);
-	var color = Chart.helpers.color;
-	$.ajax({
-		type 	: 'POST',
-		url		: '../controladores/controlador_maquina.php',
-		data 	: 
-		{
-			accion             : "listadoMaqxArea",
-			departamentoAreaID : $(this).val()
-		},
-		dataType: 'json',
-		encode	: true
-	})
-	.done(function(datos){
-		$("#maquinariaequiposDetalleID").empty();
-		for(i=0;i<datos['maquinas'].length;i++){
-			var colorName = colorNames[(i+1) % colorNames.length];
-			var dsColor = window.chartColors[colorName];
-
-			aux_maquinariaequiposDetalleID = datos['maquinas'][i]['maquinariaequiposDetalleID'];
-			aux_nombre = datos['maquinas'][i]['codigoInterno'] +' - '+ datos['maquinas'][i]['nombre'];
-			$("#maquinariaequiposDetalleID").append("<option value='" + aux_maquinariaequiposDetalleID + "' colorbackgr='"+color(dsColor).alpha(0.5).rgbString()+"' colorborder='"+dsColor+"'>" + aux_nombre + "</option>");
-		}
-		$(".selectpicker").selectpicker('refresh');
-	});
-});
