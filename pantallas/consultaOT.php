@@ -47,7 +47,7 @@ if ($retorno==1)
 		<div class="container">
 			<div class="form-group separador-md" style="margin-bottom: 1px;margin-top: 0px;margin-left: -15px;margin-right: -15px;">
 				<div class="bg-primary text-center titulo text-uppercase">Orden de Trabajo</div><button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ocultarMostrarFiltro()">
-	          <span aria-hidden="true" class='glyphicon glyphicon-chevron-up' id="botonD" name="botonD" style="top: -4px;" title="Ocultar Filtros" data-toggle='tooltip'></span>
+	          <span aria-hidden="true" class='glyphicon glyphicon-chevron-up rotateMe' id="botonD" name="botonD" style="top: -4px;" title="Ocultar Filtros" data-toggle='tooltip'></span>
 	        </button>
 			</div>
 		</div>

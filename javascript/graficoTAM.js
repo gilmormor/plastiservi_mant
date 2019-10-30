@@ -46,10 +46,10 @@ $(document).ready(function() {
 
 function ocultarMostrarFiltro(){
 	if($('#divFiltros').css('display') == 'none'){
-		$('#botonD').attr("class", "glyphicon glyphicon-chevron-up");
+		//$('#botonD').attr("class", "glyphicon glyphicon-chevron-up");
 		$('#botonD').attr("title", "Ocultar Filtros");
 	}else{
-		$('#botonD').attr("class", "glyphicon glyphicon-chevron-down");
+		//$('#botonD').attr("class", "glyphicon glyphicon-chevron-down");
 		$('#botonD').attr("title", "Mostrar Filtros");
 	}
 
@@ -169,6 +169,7 @@ function consultar()
 			{
 				$("#graficos").show();
 				$('.resultados').html('<canvas id="graficoBarra"></canvas>');
+				$('.resultados1').html('<canvas id="graficoBarra1"></canvas>');
 				$('.resultadosPie1').html('<canvas id="graficoPie1"></canvas>');
 				$('.resultadosPie2').html('<canvas id="graficoPie2"></canvas>');
 				$('.resultadosPie3').html('<canvas id="graficoPie3"></canvas>');
@@ -298,6 +299,32 @@ function consultar()
 					}
 				});
 				myBar.clear();
+
+				var Datos1 = {
+						labels : nombreDpto,
+						datasets : datos['mecanicosContTrab']
+					}
+
+				//var contexto = $("#grafico").getContext('2d');
+				var ctx1 = document.getElementById('graficoBarra1').getContext('2d');
+				//window.Barra = new Chart(ctx).Bar(Datos, {responsive : true});
+
+				window.myBar1 = new Chart(ctx1, {
+					type: 'bar',
+					data: Datos1,
+					options: {
+						responsive: true,
+						legend: {
+							position: 'top',
+						},
+						title: {
+							display: true,
+							text: 'Cantidad de Orden de trabajo por Mecánico'
+						}
+					}
+				});
+				myBar1.clear();
+
 
 				var config1 = {
 					type: 'pie',

@@ -53,7 +53,7 @@ if ($retorno==1)
 		<div class="container">
 			<div class="form-group separador-md" style="margin-bottom: 1px;margin-top: 0px;margin-left: -15px;margin-right: -15px;">
 				<div class="bg-primary text-center titulo text-uppercase">Demanda por tipo de falla</div><button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ocultarMostrarFiltro()">
-	          <span aria-hidden="true" class='glyphicon glyphicon-chevron-up' id="botonD" name="botonD" style="top: -4px;" title="Ocultar Filtros" data-toggle='tooltip'></span>
+	          <span aria-hidden="true" class='glyphicon glyphicon-chevron-up rotateMe' id="botonD" name="botonD" style="top: -4px;" title="Ocultar Filtros" data-toggle='tooltip'></span>
 	        </button>
 			</div>
 		</div>
@@ -139,6 +139,11 @@ if ($retorno==1)
 			<div class="col-xs-12 col-sm-12 col-xs-offset-1 col-md-offset-1">
 				<div class="resultados text-center" style="width: 85%;">
 					<canvas id="graficoBarra"></canvas>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-xs-offset-1 col-md-offset-1">
+				<div class="resultados1 text-center" style="width: 85%;">
+					<canvas id="graficoBarra1"></canvas>
 				</div>
 			</div>
 		</div>

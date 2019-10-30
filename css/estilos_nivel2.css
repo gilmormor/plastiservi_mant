@@ -186,6 +186,17 @@ position: relative;
     opacity: .5;
 }
 
+.rotateMe {
+ -webkit-transition: -webkit-transform 0.5s ease-out;
+ -moz-transition: -moz-transform 0.5s ease-out;
+ transition: transform 0.5s ease-out;
+}
+.rotateMe:hover {
+ -webkit-transform: rotate(180deg);
+ -moz-transform: rotate(180deg);
+ transform: rotate(180deg);
+}
+
 /*
 #menu {  text-align: center;
 font-size: 0.7em;

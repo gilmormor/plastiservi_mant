@@ -24,10 +24,10 @@ $(document).ready(function() {
 
 function ocultarMostrarFiltro(){
 	if($('#divFiltros').css('display') == 'none'){
-		$('#botonD').attr("class", "glyphicon glyphicon-chevron-up");
+		//$('#botonD').attr("class", "glyphicon glyphicon-chevron-up");
 		$('#botonD').attr("title", "Ocultar Filtros");
 	}else{
-		$('#botonD').attr("class", "glyphicon glyphicon-chevron-down");
+		//$('#botonD').attr("class", "glyphicon glyphicon-chevron-down");
 		$('#botonD').attr("title", "Mostrar Filtros");
 	}
 
@@ -139,12 +139,17 @@ function consultar()
 		}
 		*/
 		var valTablaTF = [];
-		$("#tipofalla option").each(function(){
+		var count = $("#tipofalla :selected").length
+		aux_select=""
+		if(count>0){
+			aux_select=":selected";
+		}
+		$("#tipofalla option"+aux_select).each(function(){
 			var fila = {
 				tipofalla : $(this).attr('value'),
 				label: $(this).attr('label')
 			};
-			valTablaTF.push(fila);
+			valTablaTF.push(fila);				
 		});
 
 
@@ -170,6 +175,7 @@ function consultar()
 			{
 				$("#graficos").show();
 				$('.resultados').html('<canvas id="graficoBarra"></canvas>');
+				$('.resultados1').html('<canvas id="graficoBarra1"></canvas>');
 				$('.resultadosPie1').html('<canvas id="graficoPie1"></canvas>');
 				$('.resultadosPie2').html('<canvas id="graficoPie2"></canvas>');
 				$('.resultadosPie3').html('<canvas id="graficoPie3"></canvas>');
@@ -261,7 +267,7 @@ function consultar()
 
 				var Datos = {
 						labels : nombreDpto,
-						datasets : datos['mecanicos']
+						datasets : datos['tipofalla']
 					}
 
 				//alert(datos['mecanicos']);
@@ -294,11 +300,39 @@ function consultar()
 						},
 						title: {
 							display: true,
-							text: 'Tiempo de atención por Mecánico - Expresado en Horas'
+							text: 'Tiempo de atención por Tipo Falla - Expresado en Horas'
 						}
 					}
 				});
 				myBar.clear();
+
+
+
+				var Datos = {
+						labels : nombreDpto,
+						datasets : datos['tipofallaCant']
+					}
+				//var contexto = $("#grafico").getContext('2d');
+				var ctx = document.getElementById('graficoBarra1').getContext('2d');
+				//window.Barra = new Chart(ctx).Bar(Datos, {responsive : true});
+
+				window.myBar = new Chart(ctx, {
+					type: 'bar',
+					data: Datos,
+					options: {
+						responsive: true,
+						legend: {
+							position: 'top',
+						},
+						title: {
+							display: true,
+							text: 'Cantidad OT por Tipo Falla'
+						}
+					}
+				});
+				myBar.clear();
+
+
 
 				var config1 = {
 					type: 'pie',

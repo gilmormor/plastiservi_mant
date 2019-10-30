@@ -41,10 +41,10 @@ $(document).ready(function() {
 
 function ocultarMostrarFiltro(){
 	if($('#divFiltros').css('display') == 'none'){
-		$('#botonD').attr("class", "glyphicon glyphicon-chevron-up");
+		//$('#botonD').attr("class", "glyphicon glyphicon-chevron-up");
 		$('#botonD').attr("title", "Ocultar Filtros");
 	}else{
-		$('#botonD').attr("class", "glyphicon glyphicon-chevron-down");
+		//$('#botonD').attr("class", "glyphicon glyphicon-chevron-down");
 		$('#botonD').attr("title", "Mostrar Filtros");
 	}
 	$('#divFiltros').slideToggle(500);
