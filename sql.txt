@@ -8,4 +8,4 @@ SUM(case when tipomant='C' then 1 ELSE 0 end) AS mantCorrectivo,
 SUM(case when tipomant='P' then 1 ELSE 0 end) AS mantPreventivo, 
 SUM(case when (tipomant='' or isnull(tipomant)) then 1 ELSE 0 end) AS mantSinAsignar 
 FROM solicitudtrabmant LEFT JOIN ordentrabmant ON solicitudtrabmant.solicitudTrabID=ordentrabmant.solicitudTrabID 
-where solicitudtrabmant.usuarioIDdelete=0 and true and true GROUP BY DATE_FORMAT(date(fechaHoraini), '%d/%m/%Y') ORDER BY solicitudtrabmant.fechaHoraini;
+where solicitudtrabmant.usuarioIDdelete=0 and true and true GROUP BY DATE_FORMAT(date(fechaHoraini), '%d/%m/%Y') ORDER BY solicitudtrabmant.fechaHoraini
